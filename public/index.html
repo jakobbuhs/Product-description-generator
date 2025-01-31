@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Produktbeskrivelse Generator</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background-color: white;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .output {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+        }
+
+        .output.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .output.error {
+            border-left: 4px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-primary);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Produktbeskrivelse Generator</h1>
+        <div class="form-group">
+            <label for="productName">Produktnavn</label>
+            <input 
+                type="text" 
+                id="productName" 
+                placeholder="f.eks., Ultra Pro Gaming Mus"
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Produktkategori</label>
+            <input 
+                type="text" 
+                id="category" 
+                placeholder="f.eks., gaming-tilbehør"
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="keyFeatures">Hovedfunksjoner</label>
+            <textarea 
+                id="keyFeatures" 
+                placeholder="Skriv inn hovedfunksjoner, adskilt med komma&#10;f.eks., RGB-belysning, 16000 DPI-sensor, ergonomisk design"
+            ></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="tone">Skrivestil</label>
+            <select id="tone">
+                <option value="professional">Profesjonell</option>
+                <option value="casual">Uformell</option>
+                <option value="luxury">Eksklusiv</option>
+            </select>
+        </div>
+        
+        <button id="generateBtn" onclick="generateDescription()">
+            <span id="loadingSpinner" class="loading hidden"></span>
+            <span id="buttonText">Generer Beskrivelse</span>
+        </button>
+        
+        <div id="output" class="output hidden"></div>
+    </div>
+
+    <script>
+        async function generateDescription() {
+            const productName = document.getElementById('productName').value;
+            const category = document.getElementById('category').value;
+            const keyFeatures = document.getElementById('keyFeatures').value;
+            const tone = document.getElementById('tone').value;
+            const output = document.getElementById('output');
+            const generateBtn = document.getElementById('generateBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+
+            if (!productName || !category || !keyFeatures) {
+                alert('Vennligst fyll ut alle felt');
+                return;
+            }
+
+            generateBtn.disabled = true;
+            loadingSpinner.classList.remove('hidden');
+            buttonText.textContent = 'Genererer...';
+            output.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productName,
+                        category,
+                        keyFeatures,
+                        tone
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Kunne ikke generere beskrivelse');
+                }
+
+                output.textContent = data.description;
+                output.classList.remove('hidden', 'error');
+                output.classList.add('success', 'fade-in');
+            } catch (error) {
+                output.textContent = error.message;
+                output.classList.remove('hidden', 'success');
+                output.classList.add('error', 'fade-in');
+                console.error('Feil:', error);
+            } finally {
+                generateBtn.disabled = false;
+                loadingSpinner.classList.add('hidden');
+                buttonText.textContent = 'Generer Beskrivelse';
+            }
+        }
+    </script>
+</body>
+</html>
